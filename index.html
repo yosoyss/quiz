@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+
+    <!-- Add Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- --------home--------- -->
+    <div class="home">
+        <h2>Let's Play</h2>
+
+        <div class="categories" id="category-container">
+            <!-- Categories will be dynamically inserted here -->
+        </div>
+    </div>
+
+
+    <!-- --------quiz--------- -->
+    <div class="quiz" style="display:none;">
+
+        <div class="timer">
+            <div class="progress-bar">
+                <div class="progress"></div>
+                <div class="timer-text">
+                    <p class="remaning">1/10</p>
+                    <p class="countdown">10s</p>
+                </div>
+            </div>
+        </div>
+
+        <h1 id="question">Loading...</h1>
+
+        <div class="options" id="options"></div>
+        <button id="next-button">Next Question</button>
+    </div>
+
+    <!-- --------Result--------- -->
+    <div class="result" style="display:none;">
+        <h2>Result</h2>
+        <div class="result-data">
+            <p id="final-message">df</p>
+            <p id="correct">0</p>
+            <p id="wrong">0</p>
+            <p id="skip">0</p>
+        </div>
+        <button id="restart">Restart</button>
+    </div>
+</body>
+
+<script src="script.js"></script>
+
+</html>
