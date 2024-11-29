@@ -185,10 +185,10 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     const countdown = () => {
-        var timer = 7777;
+        var timer = 10;
         var timeText = document.querySelector(".countdown");
         timeText.innerHTML = timer; // Initialize timer display
-
+        timeText.style.color = "#000000";
 
         intervalID = setInterval(() => {
             timer--;
