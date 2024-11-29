@@ -71,6 +71,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         loader.style.display = 'none';
     }
 
+    function decodeHtmlEntities(text) {
+        const textArea = document.createElement("textarea");
+        textArea.innerHTML = text;
+        return textArea.value;
+    }
+
     const quiz = async (categoryId) => {
         try {
 
@@ -104,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         } catch (error) {
 
             console.error("Error fetching quiz data:", error);
-        }  finally {
+        } finally {
             hideLoader();
         }
     };
@@ -112,10 +118,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Display a question and its options
     const displayQuestion = (index) => {
         const question = questions[index];
-        const questionText = question.question;
-        const correct = question.correct_answer;
-        const incorrect = question.incorrect_answers;
-
+        const questionText = decodeHtmlEntities(question.question);
+        const correct = decodeHtmlEntities(question.correct_answer);
+        const incorrect = question.incorrect_answers.map(decodeHtmlEntities);
         // Shuffle options
         const options = [...incorrect, correct];
         options.sort(() => Math.random() - 0.5);
@@ -129,7 +134,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         options.forEach(option => {
             const button = document.createElement("button");
-            button.textContent = option;
+            button.textContent = decodeHtmlEntities(option);
 
             // Add click event to check the answer
             button.addEventListener("click", () => {
