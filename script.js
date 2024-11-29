@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     ];
 
     const categoryContainer = document.querySelector('.categories');
+    const loader = document.getElementById('loader');
 
     categories.forEach(category => {
         const categoryHTML = `
@@ -60,10 +61,26 @@ document.addEventListener("DOMContentLoaded", async function () {
         moveToNextQuestion(); // Move to the next question
     });
 
+    // Show the loader
+    function showLoader() {
+        loader.style.display = 'flex';
+    }
+
+    // Hide the loader
+    function hideLoader() {
+        loader.style.display = 'none';
+    }
+
     const quiz = async (categoryId) => {
         try {
+
+            showLoader();
+            // Simulate loading
+            // await new Promise(resolve => setTimeout(resolve, 1000));
+
+
             // Fetch 10 quiz questions
-            const response = await fetch(`https://opentdb.com/api.php?amount=2&category=${categoryId}`);
+            const response = await fetch(`https://opentdb.com/api.php?amount=10&category=${categoryId}`);
             if (!response.ok) {
                 throw new Error(`API error: ${response.status}`);
             }
@@ -72,6 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             //next button
             nextButton.disabled = true;
+
 
             // Hide the category selection screen
             document.querySelector('.home').style.display = 'none';
@@ -84,7 +102,10 @@ document.addEventListener("DOMContentLoaded", async function () {
             displayQuestion(currentQuestionIndex);
             nextButton.style.display = "block";
         } catch (error) {
+
             console.error("Error fetching quiz data:", error);
+        }  finally {
+            hideLoader();
         }
     };
 
