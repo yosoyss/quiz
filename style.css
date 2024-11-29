@@ -340,6 +340,11 @@ button:hover {
     #restart {
         margin-top: 50px;
     }
+
+    .spinner {
+        top: 50%;
+        left: 44%;
+    }
 }
 
 .option-button.active {
