@@ -280,7 +280,7 @@ button:hover {
     .quiz,
     .home {
         max-width: 100% !important;
-        height: 100vh;
+        height: 100%;
         padding: 20px;
         border-radius: 0px;
     }
@@ -291,7 +291,7 @@ button:hover {
 
     .result {
         max-width: 100% !important;
-        height: 100vh;
+        height: 100%;
         padding: 20px;
         justify-content: center;
 
