@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let categoryId;
 
     const categories = [
-        { id: 9, name: "G.K.", icon: "fas fa-brain" },
+        { id: 9, name: "G.K.", icon: "fas fa-brain", color: "#f17275" },
         { id: 21, name: "Sports", icon: "fas fa-football-ball" },
         { id: 22, name: "Geography", icon: "fas fa-globe" },
         { id: 11, name: "Film", icon: "fas fa-film" },
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Attach event listener to all category boxes
     document.querySelectorAll('.box').forEach(box => {
         box.addEventListener('click', async function () {
-            const categoryId = this.querySelector('.icon').getAttribute('data-id');
+            categoryId = this.querySelector('.icon').getAttribute('data-id');
             await quiz(categoryId); // Pass the category ID to the quiz function
         });
     });
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const quiz = async (categoryId) => {
         try {
             // Fetch 10 quiz questions
-            const response = await fetch(`https://opentdb.com/api.php?amount=10&category=${categoryId}`);
+            const response = await fetch(`https://opentdb.com/api.php?amount=2&category=${categoryId}`);
             if (!response.ok) {
                 throw new Error(`API error: ${response.status}`);
             }
@@ -153,14 +153,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         } else {
             // End of the quiz
-            document.querySelector(".result").style.display = "block";
+            document.querySelector(".result").style.display = "flex";
             document.querySelector(".quiz").style.display = "none";
             document.getElementById("options").innerHTML = "";
             nextButton.style.display = "none"; // Hide the Next button
             document.querySelector('#skip').innerHTML = `<b>Skipped</b> : ${skip}`;
             document.querySelector(".countdown").innerHTML = ""; // Clear the timer
             document.querySelector('#correct').innerHTML = `<b>Correct :</b> ${corrected}`;
-            document.querySelector('#wrong').innerHTML = `<b>Wrong :<b> ${wrong}`;
+            document.querySelector('#wrong').innerHTML = `<b>Wrong :</b> ${wrong}`;
 
 
             // Professionally worded messages based on the score
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             } else if (corrected >= 4) {
                 messageContainer.innerHTML = "📈 Good Try! You scored between 4 and 6. You're on the right track, and with a bit more practice, you'll excel.";
             } else {
-                messageContainer.innerHTML = "🔄 Keep Practicing. You scored below 4. Don't be discouraged—use this as an opportunity to learn and improve.";
+                messageContainer.innerHTML = "🔄 Keep Practicing. You scored below 4. Don't be discouraged use this as an opportunity to learn and improve.";
             }
         }
     };
@@ -185,13 +185,20 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
     const countdown = () => {
-        var timer = 5;
+        var timer = 7777;
         var timeText = document.querySelector(".countdown");
         timeText.innerHTML = timer; // Initialize timer display
+
 
         intervalID = setInterval(() => {
             timer--;
             timeText.innerHTML = timer;
+
+            if (timer <= 3) {
+                timeText.style.color = "#ff0000";
+            } else {
+                timeText.style.color = "#000000";
+            }
 
             if (timer <= 0) {
                 clearInterval(intervalID);
@@ -227,7 +234,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         try {
             await quiz(categoryId);
-            await quiz(true);
+            // console.log(categoryId)
         } catch (error) {
             console.error("Error restarting quiz:", error);
             document.getElementById("question").innerHTML = "Failed to restart quiz. Please try again later.";

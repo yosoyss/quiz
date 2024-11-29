@@ -1,19 +1,44 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body, html{
-   font-family: sans-serif;
-   top: 50%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   position: absolute;
+body,
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    /* background-color: hsla(185, 0%, 100%, 1); */
+    background-image: radial-gradient(circle at 91% 11%, hsla(66, 100%, 88%, 0.66) 4.038772213247173%, transparent 37.2265767974114%), 
+                      radial-gradient(circle at 66% 37%, hsla(16, 100%, 88%, 1) 0%, transparent 63.33640956108327%), 
+                      radial-gradient(circle at 36% 87%, hsla(321, 100%, 88%, 1) 12.107536057085522%, transparent 63.33640956108327%);
+    background-blend-mode: normal, normal, normal;
 }
 
-.home{
-    background-color: #fff;
+body {
+    overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* For Webkit browsers */
+.categories::-webkit-scrollbar {
+    display: none;
+}
+
+
+.home {
+    /* background-color: #fff; */
+    background-color: transparent;
+    backdrop-filter: blur(2px);
+    /* background-color: hsla(185, 0%, 100%, 1); */
+    /* background-image: radial-gradient(circle at 91% 11%, hsla(66, 100%, 88%, 0.66) 4.038772213247173%, transparent 37.2265767974114%), radial-gradient(circle at 66% 37%, hsla(16, 100%, 88%, 1) 0%, transparent 63.33640956108327%), radial-gradient(circle at 36% 87%, hsla(321, 100%, 88%, 1) 12.107536057085522%, transparent 63.33640956108327%); */
+    /* background-blend-mode: normal, normal, normal; */
     border-color: #eee;
     border: 1px solid;
     height: 80vh;
@@ -25,76 +50,99 @@ body, html{
     /* align-items: center; */
 }
 
-.categories{
+.categories {
     margin-top: 50px;
     padding: 10px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    align-items: center;
+    justify-content: center;
     overflow-y: scroll;
     /* height: auto; */
     /* background-color: aliceblue; */
 
 }
 
-.categories .box{
+.categories .box {
     height: 150px;
     width: 150px;
     display: flex;
+    /* backdrop-filter: blur(2px); */
     flex-direction: column;
     justify-content: center;
-    /* background: #eee; */
-    border: 1px solid #eee;
+    background: #ffffff68;
+    border: 1px solid #eeeeee;
     border-radius: 8px;
     text-align: center;
 }
 
+.categories .box :hover{
+    cursor: pointer;
+}
+
 .categories .box i {
-    font-size: 50px;
-    margin-bottom: 10px;
+    font-size: 45px;
+    margin-bottom: 20px;
     color: rgb(54, 53, 53);
 }
 
-.categories .box .box-data{
+.categories .box .box-data {
     letter-spacing: 0.7px;
     font-size: 16px;
 }
 
-h2{
+h2 {
     margin-top: 25px;
 }
 
 
 /* -------------------------- */
-.quiz{
+.quiz {
     width: 450px;
     height: 80vh;
-    padding: 60px 20px 60px  20px;
+    padding: 60px 20px 60px 20px;
     background-color: #ffffff;
+
     box-shadow: 2px 2px 7px 2px #eee;
     display: flex;
     flex-direction: column;
     align-items: center;
 
 }
-.options{
+
+.options {
     margin-top: 50px;
     display: flex;
     width: 100%;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 400;
     align-items: center;
     flex-direction: column;
 }
 
-#question{
+#question {
     font-size: 18px;
-
+    border-radius: 8px;
+    width: 90%;
+    height: 50px;
+    /* color: white; */
+    /* padding: 20px; */
+    margin-top: 50px;
 }
 
-#next-button{
+#next-button {
     margin-top: 30px;
 }
 
-button{
+.result > a{
+    background-color: #eee;
+    text-align: center;
+    text-decoration: none;
+}
+
+button, .result > a {
     border-radius: 50px;
     border: 1px #000000;
     align-self: center;
@@ -102,31 +150,32 @@ button{
     font-size: 14px;
     margin-top: 8px;
     width: 350px;
-    padding: 8px;
+    padding: 14px;
 }
 
-button:focus{
+button:focus {
     background-color: #000000;
-    color:white
+    color: white
 }
 
-button:hover{
+button:hover {
     cursor: pointer;
 }
 
-.timer{
+.timer {
     width: 100%;
     margin: 15px 0px;
-    padding: 10px;
+    padding: 10px 0;
 }
-.timer .progress-bar{
+
+.timer .progress-bar {
     width: 100%;
     background-color: #dcdcdc;
     border-radius: 50px;
     height: 7px;
 }
 
-.timer .progress-bar .progress{
+.timer .progress-bar .progress {
     height: inherit;
     background-color: #000000;
     width: 50%;
@@ -134,7 +183,7 @@ button:hover{
     transition: width 0.5s;
 }
 
-.timer-text{
+.timer-text {
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
@@ -142,54 +191,68 @@ button:hover{
 
 
 /* -----------RESULT----------- */
-.result{
+.result {
     background-color: #fff;
     box-shadow: 2px 2px 7px 2px #eee;
     padding: 30px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    align-items: center;
     height: 50vh;
+    width: 450px;
     border-radius: 8px;
 }
 
-.result h2{
+.result h2 {
     text-align: center;
 }
-.result-data{
+
+.result-data {
     width: 100%;
     font-size: 16px;
     line-height: 20px;
     margin-bottom: 20px;
 }
 
-#final-message{
-    width: 10%0%;
-    margin-top:50px;
+#final-message {
+    width: 100%;
+    margin-top: 50px;
+    font-size: 18px;
+    letter-spacing: 0.5px;
     margin-bottom: 20px;
-    text-align: center;
+    text-align: justify;
 }
 
 @media (max-width:768px) {
-    body, html {
-        position: static; /* Reset position */
-        top: auto;        /* Reset top position */
-        left: auto;       /* Reset left position */
-        transform: none;  /* Reset transform */
-        margin: 0;        /* Optional: remove any margin that might be set */
+
+    body,
+    html {
+        position: static;
+        /* Reset position */
+        top: auto;
+        /* Reset top position */
+        left: auto;
+        /* Reset left position */
+        transform: none;
+        /* Reset transform */
+        margin: 0;
+        /* Optional: remove any margin that might be set */
     }
-    .quiz, .home{
+
+    .quiz,
+    .home {
         max-width: 100% !important;
         height: 100vh;
         padding: 20px;
         border-radius: 0px;
     }
 
-    .home{
+    .home {
         width: 100%;
     }
 
-    .result{
+    .result {
         max-width: 100% !important;
         height: 100vh;
         padding: 20px;
@@ -197,46 +260,47 @@ button:hover{
 
     }
 
-    #question, .timer{
+    #question,
+    .timer {
         width: 100%;
     }
 
-    #question{
-        margin-top: 50px;
+    #question {
+        margin-top: 60px;
     }
 
-    .timer{
+    .timer {
         margin-top: 40px;
     }
 
-    .options{
+    .options {
         margin-top: 100px;
     }
 
-    #next-button{
+    #next-button {
         bottom: 50px;
         position: absolute;
     }
 
-    #final-message{
+    #final-message {
         margin-top: 20px;
     }
 
-    .categories{
+    .categories {
         width: 100%;
 
     }
 
-    .result h2{
+    .result h2 {
         margin-top: 40px;
     }
 
-    #final-message{
+    #final-message {
         margin-top: 50px;
         margin-bottom: 50px;
     }
 
-    #restart{
+    #restart {
         margin-top: 50px;
     }
 }
