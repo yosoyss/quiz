@@ -80,6 +80,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     const quiz = async (categoryId) => {
         try {
 
+            currentQuestionIndex = 0;
+            skip = 0;
+            corrected = 0;
+            wrong = 0;
+
             showLoader();
             // Simulate loading
             // await new Promise(resolve => setTimeout(resolve, 1000));
