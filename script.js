@@ -136,32 +136,44 @@ document.addEventListener("DOMContentLoaded", async function () {
         // Display options
         const optionsContainer = document.getElementById("options");
         optionsContainer.innerHTML = ""; // Clear previous options
-
+        
         options.forEach(option => {
-            const button = document.createElement("button");
-            button.textContent = decodeHtmlEntities(option);
-
-            // Add click event to check the answer
-            button.addEventListener("click", () => {
-                // Mark the selected button
-                document.querySelectorAll(".option-button").forEach(btn => {
-                    btn.disabled = true; // Disable all buttons
-                    btn.classList.remove("active");
+            // Create the checkbox input
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.value = decodeHtmlEntities(option);
+            checkbox.classList.add("option-checkbox");
+            checkbox.id = `option-${option}`; // Unique ID for each checkbox
+        
+            // Create the label
+            const label = document.createElement("label");
+            label.htmlFor = `option-${option}`; // Link label to the checkbox via the 'for' attribute
+            label.textContent = decodeHtmlEntities(option);
+        
+            // Append both checkbox and label to the container
+            optionsContainer.appendChild(checkbox);
+            optionsContainer.appendChild(label);
+        
+            // Add change event listener to the checkbox
+            checkbox.addEventListener("change", () => {
+                // Disable all checkboxes once one is selected
+                document.querySelectorAll(".option-checkbox").forEach(chk => {
+                    chk.disabled = true;
                 });
-                button.classList.add("active"); // Highlight selected button
-
+        
                 // Enable Next button
                 nextButton.disabled = false;
-
-                if (option === correct) {
+        
+                // Check the selected option
+                const selectedOption = document.querySelector(".option-checkbox:checked").value;
+                if (selectedOption === correct) {
                     corrected++;
                 } else {
                     wrong++;
                 }
             });
-
-            optionsContainer.appendChild(button);
         });
+        
 
         // Start the countdown timer
         countdown();
