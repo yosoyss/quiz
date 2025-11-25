@@ -3,71 +3,74 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz</title>
-
-    <!-- Add Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        <!-- google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <div id="loader">
-        <div class="spinner"></div>
+    <header>
+        <div class="logo">QuiZz</div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>QuiZz</h1>
+        <p>The ultimate quiz experience. Pure. Clean. Unstoppable.</p>
+        <button class="start-btn" onclick="showCats()">START QUIZ</button>
+    </section>
+
+    <!-- Categories -->
+    <div class="categories-section" id="cats">
+        <h2 class="section-title">Choose Your Category</h2>
+        <div class="categories-scroll" id="grid"></div>
     </div>
 
-    <!-- --------home--------- -->
-    <div class="home">
-        <h2>Let's Play</h2>
-
-        <div class="categories" id="category-container">
-
-            <!-- Categories will be dynamically inserted here -->
-        </div>
-    </div>
-
-
-    <!-- --------quiz--------- -->
-    <div class="quiz" style="display:none;">
-
-        <div class="timer">
-            <div class="progress-bar">
-                <div class="progress"></div>
-                <div class="timer-text">
-                    <p class="remaning">1/10</p>
-                    <p class="countdown">10s</p>
+    <!-- Quiz -->
+    <div class="quiz-screen" id="quiz">
+        <div class="quiz-box">
+            <div class="quiz-header">
+                <h2 id="title">General Knowledge</h2>
+                <div class="progress">
+                    <div class="fill" id="prog"></div>
+                </div>
+            </div>
+            <div class="quiz-body">
+                <div id="question">Loading question...</div>
+                <div class="options" id="opts"></div>
+                <div class="quiz-footer">
+                    <div class="timer" id="timer">15s</div>
+                    <button id="next">Next</button>
                 </div>
             </div>
         </div>
-
-        <h1 id="question">Loading...</h1>
-
-        <div class="options" id="options"></div>
-        <button id="next-button">Submit</button>
     </div>
 
-    <!-- --------Result--------- -->
-    <div class="result" style="display:none;">
-        <h2>Result</h2>
-        <div class="result-data">
-            <p id="final-message">df</p>
-            <p id="correct">0</p>
-            <p id="wrong">0</p>
-            <p id="skip">0</p>
+    <!-- Result -->
+    <div class="result-screen" id="result">
+        <div class="result-box">
+            <h2>Quiz Complete!</h2>
+            <div class="pie" id="pie">0/10</div>
+            <h3 id="msg">Well Done!</h3>
+            <div class="stats">
+                <div class="stat"><strong id="c">0</strong> Correct</div>
+                <div class="stat"><strong id="w">0</strong> Wrong</div>
+                <div class="stat"><strong id="s">0</strong> Skipped</div>
+            </div>
+            <button class="start-btn" onclick="location.reload()">Play Again</button>
         </div>
-        <button id="restart">Restart</button>
-        <a href="/" id="homePage">Home</a>
     </div>
+
+       <!-- Main Script -->
+    <script src="script.js" defer></script>
 </body>
-
-<script src="script.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closebrackets.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/closetag.min.js"></script>
-
 
 </html>

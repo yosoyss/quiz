@@ -1,290 +1,77 @@
-document.addEventListener("DOMContentLoaded", async function () {
-    let currentQuestionIndex = 0, questions;
-    let intervalID;
-    let nextButton = document.querySelector('#next-button');
-    let skip = 0;
-    let corrected = 0;
-    let wrong = 0;
-    let categoryId;
 
-    const categories = [
-        { id: 9, name: "G.K.", icon: "fas fa-brain", color: "#f17275" },
-        { id: 21, name: "Sports", icon: "fas fa-football-ball" },
-        { id: 22, name: "Geography", icon: "fas fa-globe" },
-        { id: 11, name: "Film", icon: "fas fa-film" },
-        { id: 17, name: "Science: Computers", icon: "fas fa-laptop" },
-        { id: 18, name: "Gadgets", icon: "fas fa-cogs" },
-        { id: 23, name: "History", icon: "fas fa-landmark" },
-        { id: 24, name: "Art", icon: "fas fa-palette" },
-        { id: 25, name: "Animals", icon: "fas fa-paw" },
-        { id: 27, name: "Vehicles", icon: "fas fa-car" },
-        { id: 28, name: "Video Games", icon: "fas fa-gamepad" },
-        { id: 29, name: "Music", icon: "fas fa-music" },
-        { id: 30, name: "Books", icon: "fas fa-book" },
-        { id: 31, name: "Theatre", icon: "fas fa-theater-masks" },
-        { id: 32, name: "Comics", icon: "fas fa-book-open" },
-        { id: 33, name: "Japanese Anime & Manga", icon: "fas fa-dragon" },
-        { id: 34, name: "Nature", icon: "fas fa-leaf" },
-        { id: 35, name: "Computers", icon: "fas fa-laptop" },
-        { id: 36, name: "Science: Computers", icon: "fas fa-laptop" }
-    ];
+const cats = [
+    { id: 9, name: "General Knowledge", icon: "fa-brain" },
+    { id: 21, name: "Sports", icon: "fa-futbol" },
+    { id: 22, name: "Geography", icon: "fa-globe" },
+    { id: 11, name: "Movies", icon: "fa-film" },
+    { id: 17, name: "Science", icon: "fa-flask" },
+    { id: 18, name: "Computers", icon: "fa-laptop-code" },
+    { id: 23, name: "History", icon: "fa-monument" },
+    { id: 25, name: "Animals", icon: "fa-paw" }
+];
 
-    const categoryContainer = document.querySelector('.categories');
-    const loader = document.getElementById('loader');
-
-    categories.forEach(category => {
-        const categoryHTML = `
-            <div class="box">
-                <div class="icon" data-id="${category.id}">
-                    <i class="${category.icon}"></i>
-                </div>
-                <div class="box-data">
-                    <h4>${category.name}</h4>
-                </div>
-            </div>
-        `;
-
-        categoryContainer.innerHTML += categoryHTML; // Append the HTML for each category
-    });
-
-    // Attach event listener to all category boxes
-    document.querySelectorAll('.box').forEach(box => {
-        box.addEventListener('click', async function () {
-            categoryId = this.querySelector('.icon').getAttribute('data-id');
-            await quiz(categoryId); // Pass the category ID to the quiz function
-        });
-    });
-
-    // Add event listener to the Next button
-    nextButton.addEventListener("click", () => {
-        clearInterval(intervalID); // Stop the countdown for the current question
-        moveToNextQuestion(); // Move to the next question
-    });
-
-    // Show the loader
-    function showLoader() {
-        loader.style.display = 'flex';
-    }
-
-    // Hide the loader
-    function hideLoader() {
-        loader.style.display = 'none';
-    }
-
-    function decodeHtmlEntities(text) {
-        const textArea = document.createElement("textarea");
-        textArea.innerHTML = text;
-        return textArea.value;
-    }
-
-    const quiz = async (categoryId) => {
-        try {
-
-            currentQuestionIndex = 0;
-            skip = 0;
-            corrected = 0;
-            wrong = 0;
-
-            showLoader();
-            // Simulate loading
-            // await new Promise(resolve => setTimeout(resolve, 1000));
-
-
-            // Fetch 10 quiz questions
-            const response = await fetch(`https://opentdb.com/api.php?amount=10&category=${categoryId}`);
-            if (!response.ok) {
-                throw new Error(`API error: ${response.status}`);
-            }
-            const data = await response.json();
-            questions = data.results;
-
-            //next button
-            nextButton.disabled = true;
-
-
-            // Hide the category selection screen
-            document.querySelector('.home').style.display = 'none';
-
-            // Show the quiz section
-            document.querySelector('.quiz').style.display = 'flex';
-            currentQuestionIndex = 0;
-
-            // Display the first question
-            displayQuestion(currentQuestionIndex);
-            nextButton.style.display = "block";
-        } catch (error) {
-
-            console.error("Error fetching quiz data:", error);
-        } finally {
-            hideLoader();
-        }
-    };
-
-    // Display a question and its options
-    const displayQuestion = (index) => {
-        const question = questions[index];
-        const questionText = decodeHtmlEntities(question.question);
-        const correct = decodeHtmlEntities(question.correct_answer);
-        const incorrect = question.incorrect_answers.map(decodeHtmlEntities);
-        // Shuffle options
-        const options = [...incorrect, correct];
-        options.sort(() => Math.random() - 0.5);
-
-        // Update the question text
-        document.getElementById("question").innerHTML = questionText;
-
-        // Display options
-        const optionsContainer = document.getElementById("options");
-        optionsContainer.innerHTML = ""; // Clear previous options
-        
-        options.forEach(option => {
-            // Create the checkbox input
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.value = decodeHtmlEntities(option);
-            checkbox.classList.add("option-checkbox");
-            checkbox.id = `option-${option}`; // Unique ID for each checkbox
-        
-            // Create the label
-            const label = document.createElement("label");
-            label.htmlFor = `option-${option}`; // Link label to the checkbox via the 'for' attribute
-            label.textContent = decodeHtmlEntities(option);
-        
-            // Append both checkbox and label to the container
-            optionsContainer.appendChild(checkbox);
-            optionsContainer.appendChild(label);
-        
-            // Add change event listener to the checkbox
-            checkbox.addEventListener("change", () => {
-                // Disable all checkboxes once one is selected
-                document.querySelectorAll(".option-checkbox").forEach(chk => {
-                    chk.disabled = true;
-                });
-        
-                // Enable Next button
-                nextButton.disabled = false;
-        
-                // Check the selected option
-                const selectedOption = document.querySelector(".option-checkbox:checked").value;
-                if (selectedOption === correct) {
-                    corrected++;
-                } else {
-                    wrong++;
-                }
-            });
-        });
-        
-
-        // Start the countdown timer
-        countdown();
-        progress();
-
-        const qindex = currentQuestionIndex;
-        document.querySelector(".remaning").innerHTML = `${qindex + 1} / 10`;
-    };
-
-    // Handle moving to the next question
-    const moveToNextQuestion = () => {
-
-        currentQuestionIndex++;
-
-        //next button
-        nextButton.disabled = true;
-
-        if (currentQuestionIndex < questions.length) {
-            displayQuestion(currentQuestionIndex);
-
-        } else {
-            // End of the quiz
-            document.querySelector(".result").style.display = "flex";
-            document.querySelector(".quiz").style.display = "none";
-            document.getElementById("options").innerHTML = "";
-            nextButton.style.display = "none"; // Hide the Next button
-            document.querySelector('#skip').innerHTML = `<b>Skipped</b> : ${skip}`;
-            document.querySelector(".countdown").innerHTML = ""; // Clear the timer
-            document.querySelector('#correct').innerHTML = `<b>Correct :</b> ${corrected}`;
-            document.querySelector('#wrong').innerHTML = `<b>Wrong :</b> ${wrong}`;
-
-
-            // Professionally worded messages based on the score
-            const messageContainer = document.querySelector("#final-message");
-            if (corrected === 10) {
-                messageContainer.innerHTML = "🌟 Outstanding! You achieved a perfect score of 10/10. Your performance demonstrates exceptional knowledge and precision.";
-            } else if (corrected >= 7) {
-                messageContainer.innerHTML = "✅ Well Done! You scored 7 or more out of 10. Great effort—keep building on your strengths!";
-            } else if (corrected >= 4) {
-                messageContainer.innerHTML = "📈 Good Try! You scored between 4 and 6. You're on the right track, and with a bit more practice, you'll excel.";
-            } else {
-                messageContainer.innerHTML = "🔄 Keep Practicing. You scored below 4. Don't be discouraged use this as an opportunity to learn and improve.";
-            }
-        }
-    };
-
-    const progress = () => {
-        const progressBar = document.querySelector(".progress");
-        let width = ((currentQuestionIndex + 1) / 10) * 100;
-        progressBar.style.width = width + "%";
-    }
-
-
-    const countdown = () => {
-        var timer = 10;
-        var timeText = document.querySelector(".countdown");
-        timeText.innerHTML = timer; // Initialize timer display
-        timeText.style.color = "#000000";
-
-        intervalID = setInterval(() => {
-            timer--;
-            timeText.innerHTML = timer;
-
-            if (timer <= 3) {
-                timeText.style.color = "#ff0000";
-            } else {
-                timeText.style.color = "#000000";
-            }
-
-            if (timer <= 0) {
-                clearInterval(intervalID);
-
-                //if question skippped then increse value
-                skip++;
-                // console.log("skipped");
-                if (currentQuestionIndex < questions.length) {
-                    moveToNextQuestion();
-                }
-            }
-        }, 1000)
-
-        clearInterval()
-    };
-
-
-    document.querySelector('#restart').addEventListener("click", async () => {
-        // Step 1: Clear the timer and reset the question index
-        clearInterval(intervalID);
-        currentQuestionIndex = 0;
-        skip = 0;
-        corrected = 0;
-        wrong = 0;
-
-        // Step 2: Reset UI elements
-        document.querySelector(".progress").style.width = "0%";
-        document.querySelector(".result").style.display = "none";
-        document.querySelector(".quiz").style.display = "flex";
-        document.querySelector(".countdown").innerHTML = "";
-        document.getElementById("options").innerHTML = "";
-        document.getElementById("question").innerHTML = "Loading new quiz...";
-
-        try {
-            await quiz(categoryId);
-            // console.log(categoryId)
-        } catch (error) {
-            console.error("Error restarting quiz:", error);
-            document.getElementById("question").innerHTML = "Failed to restart quiz. Please try again later.";
-        }
-    });
-
-
-
-    // await quiz(true);
+cats.forEach(c => {
+    document.getElementById('grid').innerHTML += `
+                <div class="cat-card" onclick="start('${c.name}',${c.id})">
+                    <i class="fas ${c.icon}"></i>
+                    <h3>${c.name}</h3>
+                </div>`;
 });
+
+function showCats() {
+    document.querySelector('.hero').style.display = 'none';
+    document.getElementById('cats').classList.add('show');
+}
+
+let q = 0, qs = [], c = 0, w = 0, s = 0, t;
+function start(n, id) {
+    document.getElementById('cats').style.display = 'none';
+    document.getElementById('title').textContent = n;
+    document.getElementById('quiz').style.display = 'flex';
+    fetch(`https://opentdb.com/api.php?amount=10&category=${id}`)
+        .then(r => r.json()).then(d => { qs = d.results; nextQ(); });
+}
+
+function nextQ() {
+    if (q >= 10) return end();
+    document.getElementById('question').innerHTML = qs[q].question.replace(/&quot;/g, '"').replace(/&#039;/g, "'");
+    document.getElementById('prog').style.width = (q + 1) * 10 + '%';
+    const o = [...qs[q].incorrect_answers, qs[q].correct_answer].sort(() => 0.5 - Math.random());
+    document.getElementById('opts').innerHTML = o.map(x => `<div class="opt" onclick="sel(this,'${x}')">${x}</div>`).join('');
+    document.getElementById('next').classList.remove('active');
+    timer(15);
+}
+
+function sel(el, a) {
+    if (document.querySelector('.opt.selected')) return;
+    el.classList.add('selected');
+    document.getElementById('next').classList.add('active');
+    if (a === qs[q].correct_answer) c++; else w++;
+}
+
+function timer(sec) {
+    clearInterval(t);
+    document.getElementById('timer').textContent = sec + 's';
+    t = setInterval(() => {
+        if (--sec <= 0) { clearInterval(t); s++; q++; nextQ(); }
+        document.getElementById('timer').textContent = sec + 's';
+    }, 1000);
+}
+
+document.getElementById('next').onclick = () => {
+    if (!document.getElementById('next').classList.contains('active')) return;
+    if (!document.querySelector('.opt.selected')) s++;
+    clearInterval(t); q++; nextQ();
+};
+
+function end() {
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('result').style.display = 'flex';
+    document.getElementById('pie').textContent = c + '/10';
+    document.getElementById('c').textContent = c;
+    document.getElementById('w').textContent = w;
+    document.getElementById('s').textContent = s;
+    document.getElementById('pie').style.background = `conic-gradient(#2563eb 0% ${c * 36}%, #3b82f6 ${c * 36}% ${(c + w) * 36}%, #ef4444 ${(c + w) * 36}% 360%)`;
+    document.getElementById('msg').textContent = c >= 8 ? "GENIUS!" : c >= 6 ? "EXCELLENT!" : "GOOD EFFORT!";
+    if (c >= 7) confetti({ particleCount: 180, spread: 70, origin: { y: 0.6 } });
+}
